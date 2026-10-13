@@ -5,9 +5,9 @@ import streamlit as st
 
 from classifier import classify_text
 
-st.set_page_config(page_title="Классификатор обращений", page_icon="📝",)
-st.title("Классификатор обращений")
-st.write("Введите текст обращения, чтобы определить его тип.")
+# st.set_page_config(page_title="Классификатор обращений", page_icon="📝",)
+# st.title("Классификатор обращений")
+st.write("Введите текст обращения, будет определен тип:")
 
 
 @st.cache_data
