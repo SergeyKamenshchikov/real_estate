@@ -7,8 +7,7 @@ from classifier import classify_text
 
 st.set_page_config(page_title="Бот для ресторанов и ТУ", page_icon="📝",)
 st.html("""<h2 style="font-weight: 600;">Бот для ресторанов и ТУ</h2>""")
-st.write("Введите текст обращения, будет определен тип:")
-
+# st.write("Введите текст обращения, будет определен тип:")
 
 @st.cache_data
 def load_categories():
@@ -33,8 +32,8 @@ descriptions, title_by_description = load_categories()
 
 with st.form("classify_form"):
   
-    text = st.text_area("Текст обращения", height=180, max_chars=5000, placeholder="Например: пришлите договор аренды ресторана",)
-    submitted = st.form_submit_button("Анализ обращения")
+    text = st.text_area("Введите текст запроса", height=180, max_chars=5000, placeholder="Например: пришлите договор аренды ресторана",)
+    submitted = st.form_submit_button("Анализ запроса")
 
 if submitted:
   
