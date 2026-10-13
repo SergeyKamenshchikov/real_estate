@@ -34,8 +34,7 @@ descriptions, title_by_description = load_categories()
 with st.form("classify_form"):
   
     text = st.text_area("Текст обращения", height=180, max_chars=5000, placeholder="Например: пришлите договор аренды ресторана",)
-    
-  submitted = st.form_submit_button("Определить тип")
+    submitted = st.form_submit_button("Определить тип")
 
 
 if submitted:
