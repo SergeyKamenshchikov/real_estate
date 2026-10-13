@@ -6,7 +6,7 @@ import streamlit as st
 from classifier import classify_text
 
 st.set_page_config(page_title="Бот для ресторанов и ТУ", page_icon="📝",)
-st.subheader("Бот для ресторанов и ТУ")
+st.html("""<h3">Бот для ресторанов и ТУ</h3>""")
 st.write("Введите текст обращения, будет определен тип:")
 
 
@@ -35,7 +35,6 @@ with st.form("classify_form"):
   
     text = st.text_area("Текст обращения", height=180, max_chars=5000, placeholder="Например: пришлите договор аренды ресторана",)
     submitted = st.form_submit_button("Анализ обращения")
-
 
 if submitted:
   
