@@ -54,7 +54,7 @@ if submitted:
                     "Не удалось однозначно определить тип обращения.")
             else:
                 title = title_by_description.get(result, result)
-                st.success(f"Тип обращения: {title}")
+                st.success(f"Ваш тип запроса: {title}")
 
         except Exception:
             st.error(
