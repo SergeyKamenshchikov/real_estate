@@ -32,7 +32,7 @@ descriptions, title_by_description = load_categories()
 
 with st.form("classify_form"):
   
-    text = st.text_area("Введите текст запроса", height=180, max_chars=5000, placeholder="Например: пришлите договор аренды ресторана",)
+    text = st.text_area("Введите текст запроса:", height=180, max_chars=5000, placeholder="Например: пришлите договор аренды ресторана",)
     submitted = st.form_submit_button("Анализ запроса")
 
 if submitted:
