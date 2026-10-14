@@ -52,7 +52,7 @@ if submitted:
                     category_embeddings = data["embeddings"]
                     embedding_model = data["embedding_model"].item()
 
-                result = classify_text_topk(text=text.strip(), descriptions=descriptions, category_embeddings=category_embeddings, embedding_model=embedding_model, top_k=top_N,)
+                result = classify_text(text=text.strip(), descriptions=descriptions, category_embeddings=category_embeddings, embedding_model=embedding_model, top_k=top_N,)
 
             if result == "Others":
                 st.warning("Не удалось однозначно определить тип обращения.")
