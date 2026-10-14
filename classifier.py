@@ -95,13 +95,33 @@ def parallel_text_func(texts, func, max_workers=max_workers):
 
     return results
 
-def classify_text_topk(text, top_k=top_N, model=model, p_threshold=prob_limit, max_workers=max_workers,):
-    
-    text_embedding = get_embeddings([text], embedding_model=embedding_model,)
+def classify_text_topk(
+    text,
+    descriptions,
+    category_embeddings,
+    embedding_model,
+    top_k=top_N,
+    model=model,
+    p_threshold=prob_limit,
+    max_workers=max_workers,
+):
+    text_embedding = get_embeddings(
+        [text],
+        embedding_model=embedding_model,
+    )
 
-    similarities = cosine_similarity(text_embedding, category_embeddings,)[0]
+    similarities = cosine_similarity(
+        text_embedding,
+        category_embeddings,
+    )[0]
+
     top_indices = np.argsort(-similarities)[:top_k]
-
     candidates = [descriptions[i] for i in top_indices]
 
-    return classify_text(text=text, problem_descriptions=candidates,model=model, p_threshold=p_threshold, max_workers=max_workers,)
+    return classify_text(
+        text=text,
+        problem_descriptions=candidates,
+        model=model,
+        p_threshold=p_threshold,
+        max_workers=max_workers,
+    )
