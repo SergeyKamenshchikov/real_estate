@@ -45,19 +45,18 @@ if submitted:
     else:
         try:
             with st.spinner("Определяем тип обращения..."):
-
                 with np.load("category_embeddings.npz", allow_pickle=False) as data:
                     descriptions = data["descriptions"].tolist()
                     category_embeddings = data["embeddings"]
                     embedding_model = data["embedding_model"].item()
-                
+            
                 result = classify_text_topk(
                     text=text.strip(),
                     descriptions=descriptions,
                     category_embeddings=category_embeddings,
                     embedding_model=embedding_model,
                     top_k=top_N,
-                )
+                ))
                   
                 result = classify_text_topk(text=text.strip(), top_k=top_N,)
 
