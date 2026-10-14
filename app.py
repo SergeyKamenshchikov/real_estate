@@ -70,7 +70,7 @@ if submitted:
                 result = classify_text(
                     text=text.strip(),
                     problem_descriptions=descriptions,
-                )
+                ).split('|')[0]
 
             if result == "Others":
                 st.warning("Не удалось однозначно определить тип обращения.")
