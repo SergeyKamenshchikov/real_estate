@@ -86,7 +86,7 @@ def classify_text(text, problem_descriptions, model="gpt-5.4", p_threshold=prob_
     probabilities = parallel_text_func(texts=descriptions, func=lambda description: extract_fact(text=text, problem_description=description, model=model,), max_workers=max_workers,)
     matched_types = [description for description, probability in zip(descriptions, probabilities) if probability >= p_threshold]
 
-    return matched_types[0] if len(matched_types) == 1 else "Others"
+    return matched_types[0].split('|')[0] if len(matched_types) == 1 else "Others"
 
 def parallel_text_func(texts, func, max_workers=max_workers):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
