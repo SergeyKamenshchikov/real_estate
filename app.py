@@ -59,6 +59,6 @@ if submitted:
                 title = title_by_description.get(result, result)
                 st.success(f"Ваш тип запроса: '{title}'")
 
-      except Exception as e:
-          st.error("Не удалось выполнить классификацию.")
-          st.exception(e)
+        except Exception as e:
+            st.error("Не удалось выполнить классификацию.")
+            st.exception(e)
