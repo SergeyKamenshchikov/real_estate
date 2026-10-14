@@ -39,16 +39,38 @@ with st.form("classify_form"):
 if submitted:
     if not text.strip():
         st.warning("Введите текст обращения.")
-
     else:
         try:
             with st.spinner("Анализирую ваш запрос. Это займет 5-10 секунд..."):
                 path = Path(__file__).resolve().parent / "Контекст для LLM.xlsx"
 
-                with np.load(path, allow_pickle=False) as data:
-                    descriptions = data["Краткое описание"].tolist()
+                if not path.is_file():
+                    raise FileNotFoundError(f"Не найден файл: {path}")
 
-                result = classify_text(text=text.strip(), problem_descriptions=descriptions)
+                data = pd.read_excel(path, engine="openpyxl")
+
+                column = "Краткое описание"
+                if column not in data.columns:
+                    raise ValueError(
+                        f"Нет столбца '{column}'. "
+                        f"Доступные столбцы: {data.columns.tolist()}"
+                    )
+
+                descriptions = (
+                    data[column]
+                    .dropna()
+                    .astype(str)
+                    .str.strip()
+                )
+                descriptions = descriptions[descriptions.ne("")].tolist()
+
+                if not descriptions:
+                    raise ValueError("Список описаний в Excel пуст.")
+
+                result = classify_text(
+                    text=text.strip(),
+                    problem_descriptions=descriptions,
+                )
 
             if result == "Others":
                 st.warning("Не удалось однозначно определить тип обращения.")
