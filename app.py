@@ -43,7 +43,7 @@ if submitted:
     else:
         try:
             with st.spinner("Анализирую ваш запрос. Это займет 5-10 секунд..."):
-                path = Path(__file__).resolve().parent / "Контекст для LLM"
+                path = Path(__file__).resolve().parent / "Контекст для LLM.xlsx"
 
                 with np.load(path, allow_pickle=False) as data:
                     descriptions = data["descriptions"].tolist()
