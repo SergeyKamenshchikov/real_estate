@@ -47,22 +47,15 @@ if submitted:
                 path = Path(__file__).resolve().parent / "category_embeddings.npz"
 
                 with np.load(path, allow_pickle=False) as data:
+                  
                     descriptions = data["descriptions"].tolist()
                     category_embeddings = data["embeddings"]
                     embedding_model = data["embedding_model"].item()
 
-                result = classify_text_topk(
-                    text=text.strip(),
-                    descriptions=descriptions,
-                    category_embeddings=category_embeddings,
-                    embedding_model=embedding_model,
-                    top_k=top_N,
-                )
+                result = classify_text_topk(text=text.strip(), descriptions=descriptions, category_embeddings=category_embeddings, embedding_model=embedding_model, top_k=top_N,)
 
             if result == "Others":
-                st.warning(
-                    "Не удалось однозначно определить тип обращения."
-                )
+                st.warning("Не удалось однозначно определить тип обращения.")
             else:
                 title = title_by_description.get(result, result)
                 st.success(f"Ваш тип запроса: '{title}'")
