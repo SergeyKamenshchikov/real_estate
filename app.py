@@ -43,11 +43,14 @@ if submitted:
     else:
         try:
             with st.spinner("Определяем тип обращения..."):
-                result = classify_text(
-                    text=text.strip(),
-                    problem_descriptions=descriptions,
-                    p_threshold=0.95,
-                    max_workers=5,)
+
+                with np.load("category_embeddings.npz", allow_pickle=False) as data:
+                  
+                  descriptions = data["descriptions"].tolist()
+                  category_embeddings = data["embeddings"]
+                  embedding_model = data["embedding_model"].item()
+                  
+                result = classify_text_topk(text=text.strip(), top_k=top_N,)
 
             if result == "Others":
                 st.warning(
