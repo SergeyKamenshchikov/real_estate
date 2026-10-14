@@ -5,17 +5,15 @@ from openai import OpenAI
 
 from math import exp
 from sklearn.metrics.pairwise import cosine_similarity
-
 from concurrent.futures import ThreadPoolExecutor
 
 # Параметры
 embedding_model = "text-embedding-3-small"
 model="gpt-5.4"
-
 prob_limit = 0.95
+
 top_N = 3
 max_workers = top_N
-#/Параметры
 
 # Инмцмация клиента
 client = OpenAI(api_key=st.secrets["AITUNNEL_API_KEY"], base_url="https://api.aitunnel.ru/v1", timeout=60.0, max_retries=2,)
@@ -92,33 +90,12 @@ def parallel_text_func(texts, func, max_workers=max_workers):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         return list(executor.map(func, texts))
 
-def classify_text_topk(
-    text,
-    descriptions,
-    category_embeddings,
-    embedding_model,
-    top_k=top_N,
-    model=model,
-    p_threshold=prob_limit,
-    max_workers=max_workers,
-):
-    text_embedding = get_embeddings(
-        [text],
-        embedding_model=embedding_model,
-    )
-
-    similarities = cosine_similarity(
-        text_embedding,
-        category_embeddings,
-    )[0]
+def classify_text_topk(text, descriptions, category_embeddings, embedding_model, top_k=top_N, model=model, p_threshold=prob_limit, max_workers=max_workers,):
+    
+    text_embedding = get_embeddings([text], embedding_model=embedding_model,)
+    similarities = cosine_similarity(text_embedding, category_embeddings,)[0]
 
     top_indices = np.argsort(-similarities)[:top_k]
     candidates = [descriptions[i] for i in top_indices]
 
-    return classify_text(
-        text=text,
-        problem_descriptions=candidates,
-        model=model,
-        p_threshold=p_threshold,
-        max_workers=max_workers,
-    )
+    return classify_text(text=text, problem_descriptions=candidates, model=model, p_threshold=p_threshold, max_workers=max_workers,)
