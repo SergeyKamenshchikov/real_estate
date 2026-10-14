@@ -18,7 +18,7 @@ max_workers = top_N
 # Инмцмация клиента
 client = OpenAI(api_key=st.secrets["AITUNNEL_API_KEY"], base_url="https://api.aitunnel.ru/v1", timeout=60.0, max_retries=2,)
 
-def extract_fact(text, problem_description, model="gpt-5.4", p_threshold=prob_limit,):
+def extract_fact(text, problem_description, model=model, p_threshold=prob_limit,):
 
     messages = [
         {
