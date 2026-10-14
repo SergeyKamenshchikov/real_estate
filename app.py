@@ -43,13 +43,10 @@ if submitted:
     else:
         try:
             with st.spinner("Анализирую ваш запрос. Это займет 5-10 секунд..."):
-                path = Path(__file__).resolve().parent / "category_embeddings.npz"
+                path = Path(__file__).resolve().parent / "Контекст для LLM"
 
                 with np.load(path, allow_pickle=False) as data:
-                  
                     descriptions = data["descriptions"].tolist()
-                    category_embeddings = data["embeddings"]
-                    embedding_model = data["embedding_model"].item()
 
                 result = classify_text(text=text.strip(), problem_descriptions=descriptions)
 
