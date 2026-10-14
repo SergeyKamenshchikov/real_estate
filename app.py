@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 import streamlit as st
-from classifier import classify_text
+from classifier import classify_text, model, prob_limit 
 
 st.set_page_config(page_title="Бот для ресторанов и ТУ", page_icon="📝",)
 st.html("""<h2 style="font-weight: 600;">Бот для ресторанов и ТУ</h2>""")
