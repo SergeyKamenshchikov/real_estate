@@ -4,7 +4,6 @@ import streamlit as st
 from openai import OpenAI
 
 from math import exp
-from sklearn.metrics.pairwise import cosine_similarity
 from concurrent.futures import ThreadPoolExecutor
 
 # Параметры
@@ -70,30 +69,12 @@ def extract_fact(text, problem_description, model=model, p_threshold=prob_limit,
 
     return p_answer
 
-def classify_text(
-    text,
-    problem_descriptions,
-    model=model,
-    p_threshold=prob_limit,
-    max_workers=max_workers,
-):
+def classify_text(text, problem_descriptions, model=model, p_threshold=prob_limit, max_workers=max_workers,):
+    
     descriptions = list(problem_descriptions)
+    probabilities = parallel_text_func(texts=descriptions, func=lambda description: extract_fact(text=text, problem_description=description, model=model,), max_workers=max_workers,)
 
-    probabilities = parallel_text_func(
-        texts=descriptions,
-        func=lambda description: extract_fact(
-            text=text,
-            problem_description=description,
-            model=model,
-        ),
-        max_workers=max_workers,
-    )
-
-    matched_types = [
-        description
-        for description, probability in zip(descriptions, probabilities)
-        if probability >= p_threshold
-    ]
+    matched_types = [description for description, probability in zip(descriptions, probabilities) if probability >= p_threshold]
 
     return matched_types[0].split('|')[0] if len(matched_types) == 1 else "Others"
 
