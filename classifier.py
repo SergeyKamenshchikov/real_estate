@@ -8,12 +8,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 from concurrent.futures import ThreadPoolExecutor
 
 # Параметры
-embedding_model = "text-embedding-3-small"
 model="gpt-5.4"
 prob_limit = 0.95
-
-top_N = 3
-max_workers = top_N
+max_workers = 18
 
 # Инмцмация клиента
 client = OpenAI(api_key=st.secrets["AITUNNEL_API_KEY"], base_url="https://api.aitunnel.ru/v1", timeout=60.0, max_retries=2,)
@@ -65,37 +62,41 @@ def extract_fact(text, problem_description, model=model, p_threshold=prob_limit,
     total = p_yes + p_no
 
     if total == 0:
-
-        raise ValueError("В полученных токенах нет '1' или '0': "f"{[(t.token, t.logprob) for t in candidates]}")
+        raise ValueError(
+            "В полученных токенах нет '1' или '0': "
+            f"{[(t.token, t.logprob) for t in candidates]}")
 
     p_answer = p_yes / total
 
     return p_answer
 
-def get_embeddings(texts, embedding_model):
-    
-    response = client.embeddings.create(model=embedding_model, input=list(texts),)
-    return np.array([item.embedding for item in sorted(response.data, key=lambda item: item.index)],dtype=np.float32,)
-
-def classify_text(text, problem_descriptions, model="gpt-5.4", p_threshold=prob_limit, max_workers=max_workers,):
-
+def classify_text(
+    text,
+    problem_descriptions,
+    model=model,
+    p_threshold=prob_limit,
+    max_workers=max_workers,
+):
     descriptions = list(problem_descriptions)
 
-    probabilities = parallel_text_func(texts=descriptions, func=lambda description: extract_fact(text=text, problem_description=description, model=model,), max_workers=max_workers,)
-    matched_types = [description for description, probability in zip(descriptions, probabilities) if probability >= p_threshold]
+    probabilities = parallel_text_func(
+        texts=descriptions,
+        func=lambda description: extract_fact(
+            text=text,
+            problem_description=description,
+            model=model,
+        ),
+        max_workers=max_workers,
+    )
 
-    return matched_types[0].split('|')[0] if len(matched_types) == 1 else "Others"
+    matched_types = [
+        description
+        for description, probability in zip(descriptions, probabilities)
+        if probability >= p_threshold
+    ]
+
+    return matched_types[0] if len(matched_types) == 1 else "Others"
 
 def parallel_text_func(texts, func, max_workers=max_workers):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         return list(executor.map(func, texts))
-
-def classify_text_topk(text, descriptions, category_embeddings, embedding_model, top_k=top_N, model=model, p_threshold=prob_limit, max_workers=max_workers,):
-    
-    text_embedding = get_embeddings([text], embedding_model=embedding_model,)
-    similarities = cosine_similarity(text_embedding, category_embeddings,)[0]
-
-    top_indices = np.argsort(-similarities)[:top_k]
-    candidates = [descriptions[i] for i in top_indices]
-
-    return classify_text(text=text, problem_descriptions=candidates, model=model, p_threshold=p_threshold, max_workers=max_workers,)
