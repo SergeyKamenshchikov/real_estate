@@ -46,7 +46,7 @@ if submitted:
                 path = Path(__file__).resolve().parent / "Контекст для LLM.xlsx"
 
                 with np.load(path, allow_pickle=False) as data:
-                    descriptions = data["descriptions"].tolist()
+                    descriptions = data["Краткое описание"].tolist()
 
                 result = classify_text(text=text.strip(), problem_descriptions=descriptions)
 
