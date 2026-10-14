@@ -89,11 +89,8 @@ def classify_text(text, problem_descriptions, model="gpt-5.4", p_threshold=prob_
     return matched_types[0] if len(matched_types) == 1 else "Others"
 
 def parallel_text_func(texts, func, max_workers=max_workers):
-
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        results = list(tqdm(executor.map(lambda x: func(x), texts), total=len(texts)))
-
-    return results
+        return list(executor.map(func, texts))
 
 def classify_text_topk(
     text,
