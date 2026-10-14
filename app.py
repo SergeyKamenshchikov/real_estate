@@ -38,18 +38,19 @@ with st.form("classify_form"):
     submitted = st.form_submit_button("Анализ запроса")
 
 if submitted:
-  
     if not text.strip():
         st.warning("Введите текст обращения.")
-      
+
     else:
         try:
             with st.spinner("Определяем тип обращения..."):
-                with np.load("category_embeddings.npz", allow_pickle=False) as data:
+                path = Path(__file__).resolve().parent / "category_embeddings.npz"
+
+                with np.load(path, allow_pickle=False) as data:
                     descriptions = data["descriptions"].tolist()
                     category_embeddings = data["embeddings"]
                     embedding_model = data["embedding_model"].item()
-            
+
                 result = classify_text_topk(
                     text=text.strip(),
                     descriptions=descriptions,
@@ -57,12 +58,11 @@ if submitted:
                     embedding_model=embedding_model,
                     top_k=top_N,
                 )
-                  
-                result = classify_text_topk(text=text.strip(), top_k=top_N,)
 
             if result == "Others":
                 st.warning(
-                    "Не удалось однозначно определить тип обращения.")
+                    "Не удалось однозначно определить тип обращения."
+                )
             else:
                 title = title_by_description.get(result, result)
                 st.success(f"Ваш тип запроса: '{title}'")
