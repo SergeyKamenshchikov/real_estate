@@ -7,7 +7,7 @@ import streamlit as st
 from classifier import classify_text, model, prob_limit 
 
 st.set_page_config(page_title="Бот по вопросам недвижимости", page_icon="📝",)
-st.html("""<h2 style="font-weight: 600;">Бот для ресторанов и ТУ</h2>""")
+st.html("""<h2 style="font-weight: 600;">Бот по вопросам недвижимости</h2>""")
 # st.write("Введите текст обращения, будет определен тип:")
 
 @st.cache_data
