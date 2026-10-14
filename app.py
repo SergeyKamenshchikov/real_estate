@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from classifier import classify_text
+from classifier import classify_text_topk
 
 st.set_page_config(page_title="Бот для ресторанов и ТУ", page_icon="📝",)
 st.html("""<h2 style="font-weight: 600;">Бот для ресторанов и ТУ</h2>""")
