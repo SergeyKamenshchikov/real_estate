@@ -90,7 +90,7 @@ def classify_text(text, problem_descriptions, model=model, p_threshold=prob_limi
         key=lambda item: item[1],
     )
 
-    return best_description.split if best_probability >= p_threshold else "Others"
+    return best_description if best_probability >= p_threshold else "Others"
 
 def parallel_text_func(texts, func, max_workers=max_workers):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
