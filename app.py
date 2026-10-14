@@ -42,7 +42,7 @@ if submitted:
 
     else:
         try:
-            with st.spinner("Определяем тип обращения..."):
+            with st.spinner("Анализирую ваш запрос. Это займет 5-10 секунд..."):
                 path = Path(__file__).resolve().parent / "category_embeddings.npz"
 
                 with np.load(path, allow_pickle=False) as data:
