@@ -56,7 +56,7 @@ if submitted:
                     category_embeddings=category_embeddings,
                     embedding_model=embedding_model,
                     top_k=top_N,
-                ))
+                )
                   
                 result = classify_text_topk(text=text.strip(), top_k=top_N,)
 
