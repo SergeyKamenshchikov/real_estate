@@ -95,7 +95,7 @@ def classify_text(
         if probability >= p_threshold
     ]
 
-    return matched_types[0] if len(matched_types) == 1 else "Others"
+    return matched_types[0].split('|')[0] if len(matched_types) == 1 else "Others"
 
 def parallel_text_func(texts, func, max_workers=max_workers):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
